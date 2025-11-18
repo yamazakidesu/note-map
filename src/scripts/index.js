@@ -126,6 +126,27 @@ window.addEventListener("load", () => {
     }
   }
 
+  let deferredPrompt;
+  const installBtn = document.getElementById("install-btn");
+
+  window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+
+    if (installBtn) installBtn.style.display = "block";
+
+    installBtn.addEventListener("click", async () => {
+      installBtn.style.display = "none";
+      deferredPrompt.prompt();
+
+      const choice = await deferredPrompt.userChoice;
+      console.log("Install choice:", choice.outcome);
+
+      deferredPrompt = null;
+    });
+  });
+
+
   const logoutButton = document.getElementById("logout-button");
   if (logoutButton) {
     logoutButton.addEventListener("click", () => {

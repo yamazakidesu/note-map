@@ -1,2 +1,2 @@
-APP_URL=<url_aplikasi>
-MAP_SERVICE_API_KEY=<api_key>
+APP_URL=<https://notemapkareudon.netlify.app/>
+MAP_SERVICE_API_KEY=<LnQ11cZ5RC22Jy5wgsdH>
