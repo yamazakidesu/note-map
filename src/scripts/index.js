@@ -85,7 +85,7 @@ const syncOfflineDrafts = async () => {
 const handleRoute = () => {
   const destination = window.location.hash.substring(1) || "/";
   const privatePages = ["/", "/add"];
-  const publicPages = ["/login", "/register", "/about"];
+  const publicPages = ["/login", "/register"];
 
   checkLoginState();
 

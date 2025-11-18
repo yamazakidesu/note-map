@@ -36,7 +36,7 @@ class FavoritesPage {
               <p class="story-item__description">${story.description.substring(0, 150)}...</p>
             </div>
             <button class="favorite-button unfavorite-btn" data-id="${story.id}" aria-label="Hapus dari favorit">
-              <i class="fas fa-heart" aria-hidden="true"></i>
+              <i class="far fa-bookmark" aria-hidden="true"></i>
             </button>
           </article>
         `;

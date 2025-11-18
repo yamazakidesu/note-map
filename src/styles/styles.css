@@ -1,7 +1,7 @@
 /* === 0. VARIABLES & IMPORTS === */
 :root {
   --primary-blue: #3498DB;
-  --dark-blue: #2C3E50;
+  --dark-blue: #256fa0;
   --light-gray: #ECF0F1;
   --dark-gray: #34495E;
   --white: #FFFFFF;
@@ -105,7 +105,7 @@ footer {
   display: inline-block;
   background-color: transparent;
   font-size: 28px;
-  color: #141e16;
+  color: #ffeedc;
   cursor: pointer;
 }
 
@@ -144,15 +144,15 @@ footer {
 }
 
 .nav-list li a:hover {
-  background-color: #f0f0f0;
+  background-color: #1e577c;
 }
 
 #logout-button {
   width: 100%;
-  border-color: var(--danger-red);
+  border-color: #ff4800;
   background-color: transparent;
-  border: 1px solid #a94442;
-  color: var(--danger-red);
+  border: 1px solid #ff4800;
+  color: #ff4800;
   padding: 8px 12px;
   border-radius: 4px;
   cursor: pointer;
@@ -252,7 +252,7 @@ footer {
   border-color: var(--primary-blue);
 }
 
-.favorite-button .fa-heart {
+.favorite-button .fa-bookmark {
   color: var(--danger-red);
   font-size: 1.2rem;
 }

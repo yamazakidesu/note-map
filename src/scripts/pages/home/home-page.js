@@ -99,7 +99,7 @@ export default class HomePage {
         }">
               <i class="${
                 isFavorite ? "fas" : "far"
-              } fa-heart" aria-hidden="true"></i>
+              } far fa-bookmark" aria-hidden="true"></i>
             </button>
           </article>
         `;
