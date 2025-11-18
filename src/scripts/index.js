@@ -1,60 +1,62 @@
-import 'leaflet/dist/leaflet.css';
-import '../styles/styles.css';
-import App from './app';
-import StoryApiSource from './data/api';
-import AuthToken from './utils/auth-token';
-import DatabaseHelper from './utils/database-helper';
-import NotificationHelper from './utils/notification-helper';
+import "leaflet/dist/leaflet.css";
+import "../styles/styles.css";
+import App from "./app";
+import StoryApiSource from "./data/api";
+import AuthToken from "./utils/auth-token";
+import DatabaseHelper from "./utils/database-helper";
+import NotificationHelper from "./utils/notification-helper";
 
 const app = new App({
-  drawerButton: document.querySelector('#drawer-button'),
-  navigationDrawer: document.querySelector('#navigation-drawer'),
-  content: document.querySelector('.main-content'),
+  drawerButton: document.querySelector("#drawer-button"),
+  navigationDrawer: document.querySelector("#navigation-drawer"),
+  content: document.querySelector(".main-content"),
 });
 
 const checkLoginState = () => {
-  const logoutButton = document.querySelector('#logout-button');
+  const logoutButton = document.querySelector("#logout-button");
   const addStoryLink = document.querySelector('a[href="#/add"]');
-  const notificationBtn = document.querySelector('#notification-toggle-btn');
+  const notificationBtn = document.querySelector("#notification-toggle-btn");
 
   const isLoggedIn = !!AuthToken.get();
 
   if (logoutButton) {
-    logoutButton.style.display = isLoggedIn ? 'block' : 'none';
+    logoutButton.style.display = isLoggedIn ? "block" : "none";
   }
   if (addStoryLink) {
-    addStoryLink.style.display = isLoggedIn ? 'block' : 'none';
+    addStoryLink.style.display = isLoggedIn ? "block" : "none";
   }
   if (notificationBtn) {
-    notificationBtn.style.display = isLoggedIn ? 'flex' : 'none';
+    notificationBtn.style.display = isLoggedIn ? "flex" : "none";
   }
 };
 
 const updateNotificationButtonState = async () => {
-  const notificationBtn = document.getElementById('notification-toggle-btn');
-  if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
-      SweetAlert.showError('Fitur notifikasi tidak didukung di browser atau lingkungan ini.');
-      return;
-    }
+  const notificationBtn = document.getElementById("notification-toggle-btn");
+  if (!("serviceWorker" in navigator) || !("PushManager" in window)) {
+    SweetAlert.showError(
+      "Fitur notifikasi tidak didukung di browser atau lingkungan ini."
+    );
+    return;
+  }
 
-  const notificationText = document.getElementById('notification-text');
-  const notificationIcon = notificationBtn.querySelector('i');
+  const notificationText = document.getElementById("notification-text");
+  const notificationIcon = notificationBtn.querySelector("i");
 
   try {
     const registration = await navigator.serviceWorker.getRegistration();
     const subscription = await registration?.pushManager.getSubscription();
 
     if (subscription) {
-      notificationText.textContent = 'Unsubscribe';
-      notificationIcon.className = 'fas fa-bell-slash';
-      notificationBtn.classList.add('subscribed');
+      notificationText.textContent = "Unsubscribe";
+      notificationIcon.className = "fas fa-bell-slash";
+      notificationBtn.classList.add("subscribed");
     } else {
-      notificationText.textContent = 'Subscribe';
-      notificationIcon.className = 'far fa-bell';
-      notificationBtn.classList.remove('subscribed');
+      notificationText.textContent = "Subscribe";
+      notificationIcon.className = "far fa-bell";
+      notificationBtn.classList.remove("subscribed");
     }
   } catch (error) {
-    console.error('Gagal memperbarui status tombol notifikasi:', error);
+    console.error("Gagal memperbarui status tombol notifikasi:", error);
   }
 };
 
@@ -73,70 +75,84 @@ const syncOfflineDrafts = async () => {
       await DatabaseHelper.deleteDraft(draft.id);
       console.log(`Draft dengan ID ${draft.id} berhasil disinkronkan.`);
     }
-    alert('Semua draft offline berhasil dikirim ke server!');
-    
+    alert("Semua draft offline berhasil dikirim ke server!");
   } catch (error) {
-    console.error('Gagal melakukan sinkronisasi draft:', error);
-    alert('Sebagian draft mungkin gagal disinkronkan.');
+    console.error("Gagal melakukan sinkronisasi draft:", error);
+    alert("Sebagian draft mungkin gagal disinkronkan.");
   }
 };
 
 const handleRoute = () => {
-  const destination = window.location.hash.substring(1) || '/';
-  const privatePages = ['/', '/add'];
-  const publicPages = ['/login', '/register', '/about'];
+  const destination = window.location.hash.substring(1) || "/";
+  const privatePages = ["/", "/add"];
+  const publicPages = ["/login", "/register", "/about"];
 
   checkLoginState();
 
   if (privatePages.includes(destination) && !AuthToken.get()) {
-    window.location.hash = '#/login';
+    window.location.hash = "#/login";
     return;
   }
 
-  if ((destination === '/login' || destination === '/register') && AuthToken.get()) {
-    window.location.hash = '#/';
+  if (
+    (destination === "/login" || destination === "/register") &&
+    AuthToken.get()
+  ) {
+    window.location.hash = "#/";
     return;
   }
-  
+
   app.renderPage();
 };
 
-window.addEventListener('hashchange', handleRoute);
+window.addEventListener("hashchange", handleRoute);
 
-window.addEventListener('load', () => {
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js')
-      .then(() => console.log('Service Worker registered successfully.'))
-      .catch(error => console.log('Service Worker registration failed:', error));
+window.addEventListener("load", () => {
+  if ("serviceWorker" in navigator) {
+    const isLocalhost = ["localhost", "127.0.0.1"].includes(location.hostname);
+
+    if (!isLocalhost) {
+      navigator.serviceWorker
+        .register("sw.js")
+        .then(() => console.log("Service Worker registered successfully."))
+        .catch((error) =>
+          console.log("Service Worker registration failed:", error)
+        );
+    } else {
+      navigator.serviceWorker.getRegistrations().then((regs) => {
+        regs.forEach((reg) => reg.unregister());
+      });
+      console.log("Service Worker disabled in development.");
+    }
   }
 
-  const logoutButton = document.getElementById('logout-button');
+  const logoutButton = document.getElementById("logout-button");
   if (logoutButton) {
-    logoutButton.addEventListener('click', () => {
+    logoutButton.addEventListener("click", () => {
       AuthToken.remove();
-      window.location.hash = '#/login';
+      window.location.hash = "#/login";
       window.location.reload();
     });
   }
 
-  const notificationBtn = document.getElementById('notification-toggle-btn');
-if (notificationBtn) {
-  notificationBtn.addEventListener('click', async () => {
-    const registration = await navigator.serviceWorker.ready;
-    const subscription = await registration.pushManager.getSubscription();
-    let success = false;
-    
-    if (subscription) {
-      success = await NotificationHelper.unsubscribe();
-    } else {
-      success = await NotificationHelper.subscribe();
-    }
+  const notificationBtn = document.getElementById("notification-toggle-btn");
+  if (notificationBtn) {
+    notificationBtn.addEventListener("click", async () => {
+      const registration = await navigator.serviceWorker.ready;
+      const subscription = await registration.pushManager.getSubscription();
+      let success = false;
 
-    if (success) {
-      setTimeout(() => updateNotificationButtonState(), 100); 
-    }
-  });
-}
+      if (subscription) {
+        success = await NotificationHelper.unsubscribe();
+      } else {
+        success = await NotificationHelper.subscribe();
+      }
+
+      if (success) {
+        setTimeout(() => updateNotificationButtonState(), 100);
+      }
+    });
+  }
   handleRoute();
   syncOfflineDrafts();
   updateNotificationButtonState();
