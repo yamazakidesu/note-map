@@ -52,7 +52,7 @@ const updateNotificationButtonState = async () => {
       notificationBtn.classList.add("subscribed");
     } else {
       notificationText.textContent = "Subscribe";
-      notificationIcon.className = "far fa-bell";
+      notificationIcon.className = "far fa-check-circle";
       notificationBtn.classList.remove("subscribed");
     }
   } catch (error) {
