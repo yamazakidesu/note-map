@@ -2,7 +2,7 @@
   "name": "NoteMap-Kareudon",
   "short_name": "NoteMap",
   "description": "Aplikasi PWA untuk berbagi cerita lokasi Anda di peta interaktif.",
-  "start_url": "/#/",
+  "start_url": ".",
   "display": "standalone",
   "background_color": "#ECF0F1",
   "theme_color": "#0d6efd",
