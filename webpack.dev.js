@@ -5,7 +5,7 @@ const { merge } = require('webpack-merge');
 module.exports = merge(common, {
   mode: 'development',
   devServer: {
-    static: path.resolve(__dirname, 'dist'),
+    static: path.resolve(__dirname, 'docs'),
     port: 9000,
     client: {
       overlay: {
