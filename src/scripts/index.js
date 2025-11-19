@@ -109,10 +109,21 @@ window.addEventListener("hashchange", handleRoute);
 
 window.addEventListener("load", () => {
   if ("serviceWorker" in navigator) {
-    navigator.serviceWorker
-      .register("/sw.js")
-      .then((reg) => console.log("SW registered:", reg))
-      .catch((err) => console.error("SW register failed:", err));
+    const isLocalhost = ["localhost", "127.0.0.1"].includes(location.hostname);
+
+    if (!isLocalhost) {
+      navigator.serviceWorker
+        .register("sw.js")
+        .then(() => console.log("Service Worker registered successfully."))
+        .catch((error) =>
+          console.log("Service Worker registration failed:", error)
+        );
+    } else {
+      navigator.serviceWorker.getRegistrations().then((regs) => {
+        regs.forEach((reg) => reg.unregister());
+      });
+      console.log("Service Worker disabled in development.");
+    }
   }
 
   let deferredPrompt;
@@ -134,6 +145,7 @@ window.addEventListener("load", () => {
       deferredPrompt = null;
     });
   });
+
 
   const logoutButton = document.getElementById("logout-button");
   if (logoutButton) {

@@ -22,18 +22,11 @@
   ],
   "screenshots": [
     {
-      "src": "screenshots/screenshot1.jpg",
+      "src": "screenshots/1.png",
       "sizes": "1280x720",
       "type": "image/jpeg",
       "form_factor": "wide",
       "label": "Tampilan Peta Cerita"
-    },
-    {
-      "src": "screenshots/screenshot2.jpg",
-      "sizes": "1280x720",
-      "type": "image/jpeg",
-      "form_factor": "wide",
-      "label": "Tampilan Tambah Cerita"
     }
   ]
 }
